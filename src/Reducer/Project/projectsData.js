@@ -1,31 +1,34 @@
-import { SKILLS , CLEAR_SKILLS, MODIFY_SKILLS_COUNT} from "../../Constants/constant";
+import {PROJECTS  , CLEAR_PROJECTS , MODIFY_PROJECTS_COUNT } from "../../Constants/constant";
 const initialState ={
-    Data: [],
+    Data: [{projectName: null , techStack : null , description: null} ],
     Count: 1
  }
 
- export default function (state = initialState , action){
+export default function (state = initialState , action){
     if(action){
         switch(action.type){
-            case SKILLS:
+            case PROJECTS:
                 return {
                     ...state,
                     Data: action.payload,
-
                 }
-            case MODIFY_SKILLS_COUNT:
+            case MODIFY_PROJECTS_COUNT:
                 return {
                     ...state,
                     Count : action.payload
                 }
+           
 
-            case CLEAR_SKILLS:
+            case CLEAR_PROJECTS:
                 return {
-                    Data: []
+                    
                 }
             default:
                 return state
          }
 
     }
+    
+        
+
  }

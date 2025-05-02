@@ -1,169 +1,34 @@
-import React, { useState, useEffect } from "react";
-import { SaveEducationData  , ModifyEducationCount } from "../../actions";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  TextField,
-
-  Typography,
-  Paper
-} from "@material-ui/core";
-
-
+import React, { useEffect  , useRef} from 'react'
 import { connect } from "react-redux";
+import { makeStyles  } from "@material-ui/core/styles";
+
+import ResumeModel from "./resume"
+import { 
+Button
+} from '@material-ui/core';
 
 
 
 const useStyles = makeStyles((theme) => ({
-  deleteButton: {
-   marginRight: "1%"
-  },
-  addButton: {
-
-  },
-  footer: {
-    alignItems: "left",
-    padding: "1%"
-  },
-
-  instance: {
-    marginBottom: "1%",
-    padding: "1%"
-  }
- 
+    root: {
+      flexGrow: 1
+    },
   
-}));
+  }));
+
+const MainPage = (props) => {
 
 
 
-const EducationForm = (props) => {
-  const classes = useStyles();
+    const classes = useStyles();
+    return (
+        <div>
 
-
-  const handleChange = (index) => (event) =>  {
-   const {name , value} = event.target;
-   const list = [...props.educationFormData.Data];
-   console.log(index+1 , list.length)
-   if(index+1 > list.length){
-    while(index+1 != list.length){
-      list.push({courseName: null , completionYear: null, college: null , percentage: null })
-    }
-   }
-   console.log(list)
-   list[index][name] =value;
-   props.SaveEducationData(list)
-  };
-
-
-
-  const onSubmit = (data) => {
-    console.log(data)
-  }
-
-const Deleteducation = () => {
-  console.log("Decreasing count")
-  const list = [...props.educationFormData.Data];
-  list.pop();
-  props.SaveEducationData(list)
-  props.ModifyEducationCount( props.educationFormData.Count-1)
+            <ResumeModel />
+        </div>
+    )
 }
 
-const AddEducation = () => {
-  const list = [...props.educationFormData.Data];
-  list.push({courseName: null , completionYear: null, college: null , percentage: null });
-  props.SaveEducationData(list)
-  props.ModifyEducationCount( props.educationFormData.Count+1)
-}
+const mapStateToProps = (state) => ({});
 
-
-
-  let Form = [];
-  for (let i = 0; i <  props.educationFormData.Count ; i++) {
-    Form.push(
-      <div className={classes.instance}>
-        <Grid container spacing={3}>
-          <Grid item md={6} xs={12}>
-            <TextField
-              required
-              fullWidth
-              name={`courseName`}
-              defaultValue={props.educationFormData.Data && props.educationFormData.Data[i] ? props.educationFormData.Data[i].courseName : ""}
-              label="Course Name"
-              onChange={handleChange(i)}
-              variant="outlined"
-              formControlProps={{
-                fullWidth: true
-              }}
-            />
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <TextField
-              required
-              fullWidth
-              name={`completionYear`}
-              defaultValue={props.educationFormData.Data && props.educationFormData.Data[i] ? props.educationFormData.Data[i].completionYear : ""}
-              label="Completion Year"
-              type="number"
-              onChange={handleChange(i)}
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <TextField
-              required
-              fullWidth
-              defaultValue={props.educationFormData.Data && props.educationFormData.Data[i] ? props.educationFormData.Data[i].college : ""}
-              name={`college`}
-              label="College/School"
-              onChange={handleChange(i)}
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <TextField
-              required
-              fullWidth
-              defaultValue={props.educationFormData.Data && props.educationFormData.Data[i] ? props.educationFormData.Data[i].percentage : ""}
-              name={`percentage`}
-              label="Percentage"
-              onChange={handleChange(i)}
-              variant="outlined"
-            />
-          </Grid>
-        </Grid>
-        <Divider />
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <form autoComplete="off" noValidate>
-        <Card>
-          <CardHeader subheader="Add your Education Details" id='section_description'/> 
-          {Form.map((instance) => instance)}
-          <div className={classes.footer}>
-           <Button id='delete' disabled={props.educationFormData.Count<2} className={classes.deleteButton} onClick={Deleteducation} variant="outlined" color="primary" >
-            Delete
-          </Button>
-          <Button id='add_education' className={classes.addButton} onClick={AddEducation} variant="contained" color="primary">
-            ADD EDUCATION
-          </Button>
-          </div>
-        </Card>
-      </form>
-    </>
-  );
-};
-
-const mapStateToProps = (state) => ({
-  educationFormData: state.Education
-});
-
-export default connect(mapStateToProps, {SaveEducationData , ModifyEducationCount })(EducationForm);
+export default connect(mapStateToProps, {})(MainPage);
